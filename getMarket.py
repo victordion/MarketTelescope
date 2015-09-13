@@ -26,8 +26,8 @@ def getMarketDataToCVS(symbol):
 
     url = 'http://ichart.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv'.\
             format(symbol, from_date_m, from_date_d, from_data_y, to_date_m, to_date_d, to_date_y)
-
     response = urllib2.urlopen(url)
+        
     content = response.read()
     content = content.split('\n')
     data = csv.reader(content)

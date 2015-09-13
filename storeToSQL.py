@@ -108,11 +108,12 @@ if __name__ == "__main__":
         print "Creating history quote table for company " + symbol
         db.creatCompanyIndividualTable(symbol)
     
-        csv = getMarketDataToCVS(symbol)
         try:
+            csv = getMarketDataToCVS(symbol)
             db.fillHistoryQuoteData(symbol, csv)
         except urllib2.HTTPError, e:
             print e
+            pass
 
         #print csv
         time.sleep(3)
