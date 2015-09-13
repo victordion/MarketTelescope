@@ -88,7 +88,7 @@ class Database:
             if len(row) < 7:
                 continue;
             count += 1
-            print list(tuple([symbol]) + tuple(row[0:7]))
+            #print list(tuple([symbol]) + tuple(row[0:7]))
             query = """INSERT IGNORE INTO %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');""" % tuple([symbol] + row[0:7])
             self.insert(query)
         print "Filled " + str(count) + " history quote data to " + symbol
@@ -103,13 +103,17 @@ if __name__ == "__main__":
     all_symbols = db.getAllSymbolsFromDB()
 
     for symbol in all_symbols:
-        if "^" in symbol:
-            continue
+        #if "^" in symbol:
+        #    continue
         print "Creating history quote table for company " + symbol
         db.creatCompanyIndividualTable(symbol)
     
         csv = getMarketDataToCVS(symbol)
-        db.fillHistoryQuoteData(symbol, csv)
+        try:
+            db.fillHistoryQuoteData(symbol, csv)
+        except urllib2.HTTPError, e:
+            print e
+
         #print csv
         time.sleep(3)
 
