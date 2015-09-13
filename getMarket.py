@@ -16,7 +16,7 @@ def getMarketDataToCVS(symbol):
 
     from_date_d = 1
     from_date_m = 0
-    from_data_y = 2000
+    from_data_y = 1970
 
     now = datetime.datetime.now()
     to_date_d = now.day
@@ -75,13 +75,14 @@ def getCorr(symbol1, symbol2, window_len, days_offset):
     date_list = []
     corr_list = []
     for i in range(0, days_offset):
+        print 'Computing window_len ' + str(window_len) + ' days back for ' + str(i) + ' days'
         d, c =  getDatePriceMap(data1, data2, window_len, i)
         date_list.append(d)
         corr_list.append(c)
     return date_list, corr_list
 
 def plotCorr(symbol1, symbol2):
-    span = 100
+    span = 2000
     dates, y_10 = getCorr(symbol1, symbol2, 10, span)
     dates, y_20 = getCorr(symbol1, symbol2, 20, span)
     dates, y_30 = getCorr(symbol1, symbol2, 30, span)
@@ -92,7 +93,7 @@ def plotCorr(symbol1, symbol2):
     #print x, y
 
     fig = plt.figure()
-    fig.set_size_inches(18.5, 10.5)
+    fig.set_size_inches(150, 10)
     fig.suptitle('Stock price of ' + symbol1 + ' and ' + symbol2, fontsize=14, fontweight='bold')
     b_patch = mpatches.Patch(color='b', label='10 day')
     r_patch = mpatches.Patch(color='r', label='20 day')
@@ -106,11 +107,11 @@ def plotCorr(symbol1, symbol2):
     plt.setp(plt.gca().xaxis.get_majorticklabels(),rotation=90) 
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d-%Y'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=4))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=span/10))
     
     plt.gcf().autofmt_xdate()
-    plt.savefig('stock_corr.png', dpi = 100)
+    plt.savefig('stock_corr.png', dpi = 200)
     #plt.show()
 
-plotCorr('AMZN', 'MSFT')
+#plotCorr('AMZN', 'MSFT')
 #plotCorr('AMZN', 'TXN')
